@@ -1,137 +1,112 @@
-
 #include<stdio.h>
 #include<stdlib.h>
+#define size 5
 
-#define MAX_SIZE 20
+int queue[size];
+int front , rear;
+void init();
+void encircular(int);
+void decircular();
+void display();
 
-int queue[MAX_SIZE];
-int front = -1, rear = -1;
-int data;
+void init()
+{
+front=-1;
+rear =-1;
+}
 
-void EnQRear(int x){
+void encircular(int x)
+{
+	if((front==0 && rear==4) || front==rear+1){
+		printf("circular queue full");
+	}
 	
-	if ((rear == MAX_SIZE - 1 && front == 0) || (front == rear + 1)) {
-		printf("Queue is Overflow\n");
-	}
-	else{
-		if (front == -1 && rear == -1) {
-			front = rear = 0;
-	} else {
-	
-		rear =(rear+1)%MAX_SIZE;
-		queue[rear] = data;
-	    	printf("%d Enqueued successfully.\n", data);
-	    	
-	    }
-    }
-}
-
-void EnQFront(int x){
-		
-	if ((rear == MAX_SIZE - 1 && front == 0) || (front == rear + 1)) {
-	printf("Queue is Overflow\n");
-	}
-	else{
-	    if (front == 0) {
-		front = MAX_SIZE -1;
-		queue[front]= data;
-		printf("%d Enqueued successfully.\n", data);
-	    } else {
-		front--;
-		queue[front] = data;
-	        printf("%d Enqueued successfully.\n", data);
-	    }
-	}
-}
-
-void DeQFront() {
-    if (front == -1 && rear == -1) {
-        printf("Queue is Underflow\n");
-    }
-
-    printf("%d Dequeued successfully.\n", queue[front]);
-
-    if (front == rear) {
-        front = rear = -1;
-    } else {
-        front=(front+1)%MAX_SIZE;
-    }
-}
-
-void DeQRear(){
-
-	if (front == -1 && rear == -1) {
-        printf("Queue is Underflow\n");
-	}
-
-	printf("%d Dequeued successfully.\n", queue[front]);
-
-	if (front == rear) {
-		front = rear = -1;
-	} else {
-		
-		if( rear == 0 ){
-		
-			rear = MAX_SIZE -1;
-		
+	else
+	{
+		if(front==-1)
+		{
+		front = 0;
+		queue[size]=x;
 		}
-		else{
-		
-			rear--;
-		
-		}
-		
+		rear = (rear+1)%size;
+		queue[rear] = x;
 	}
-
 }
 
-void display() {
-    if (front == -1 && rear == -1) {
-        printf("Queue is Underflow\n");
-    }
-
-    printf("Queue elements: ");
-    for (int i = front; i <= rear; i++) {
-        printf("%d ", queue[i]);
-    }
-    printf("\n");
-}
-
-
-int main() {
-    int choice;
-
-    while (1) {
-        printf("\n\n1. Enqueue from rear\n2. Enqueue from front\n3. Dequeue from front\n4. Dequeue from rear\n5. Display\n6. Exit\n");
-        printf("\nEnter your choice: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                printf("\nEnter data to enqueue from rear: ");
-                scanf("%d", &data);
-                EnQRear(data);
-                break;
-            case 2:
-                printf("\nEnter data to enqueue from front: ");
-                scanf("%d", &data);
-                EnQFront(data);
-                break;
-            case 3:
-                DeQFront();
-                break;
-            case 4:
-                DeQRear();
-                break;
-            case 5:
-                display();
-                break;
-            case 6:
-                exit(0);
-            default:
-                printf("\nInvalid choice.\n");
+void decircular()
+{
+	if(front ==-1 && rear==-1)
+	{
+	printf("queue is empty");
+	}
+	else
+	{ 
+	int a = queue[front];
+        if (front == rear) {
+            front = -1;
+            rear = -1;
+        } else {
+            front = (front + 1) % size;
         }
+        printf("\n %dis deleted",a);
+	}
+}
+void display()
+{
+	if(front ==-1 && rear==-1)
+	{
+	printf("queue is empty");
+	}
+	else {
+        int i = front;
+        printf("Queue elements: ");
+        do {
+            printf("%d ", queue[i]);
+            i = (i + 1) % size;
+        } while (i != (rear + 1) % size);
+        printf("\n");
     }
+    
+		
+}
 
-    return 0;
+void main()
+{
+int ch,x;
+init();
+
+while(1)
+{
+	printf("\n...Circular Queue Operation...");
+	printf("\n1. Enqueue element");
+	printf("\n2.Dequeue element");
+	printf("\n3. Display queue element");
+	printf("\n 4. Exit");
+	printf("\n Enter your choice");
+	scanf("%d",&ch);
+	
+	switch(ch)
+	{
+	case 1: 
+		printf("Enter the element to be enqueued");
+		scanf("%d",&x);
+		encircular(x);
+		break;
+		
+	case 2:
+		decircular();
+		break;
+		
+	case 3:
+		display();
+		break;
+	
+	case 4:
+		exit(0);
+		
+	default: 
+		printf("\n worng choice");
+		break;
+	}
+}
 }
